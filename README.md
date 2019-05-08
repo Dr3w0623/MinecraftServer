@@ -1,9 +1,3 @@
-
-[![Docker Pulls](https://img.shields.io/docker/pulls/itzg/minecraft-server.svg)](https://hub.docker.com/r/itzg/minecraft-server/)
-[![Docker Stars](https://img.shields.io/docker/stars/itzg/minecraft-server.svg?maxAge=2592000)](https://hub.docker.com/r/itzg/minecraft-server/)
-[![GitHub Issues](https://img.shields.io/github/issues-raw/itzg/dockerfiles.svg)](https://github.com/itzg/dockerfiles/issues)
-[![](https://img.shields.io/gitter/room/itzg/dockerfiles.svg?style=flat)](https://gitter.im/itzg/dockerfiles)
-
 This docker image provides a Minecraft Server that will automatically download the latest stable
 version at startup. You can also run/upgrade to any specific version or the
 latest snapshot. See the *Versions* section below for more information.
@@ -305,44 +299,6 @@ pass `--noconsole` at the very end of the command line and not use `-it`. For ex
 
 You can install Bukkit plugins in two ways...
 
-### Using the /data volume
-
-This is the easiest way if you are using a persistent `/data` mount.
-
-To do this, you will need to attach the container's `/data` directory
-(see "Attaching data directory to host filesystem”).
-Then, you can add plugins to the `/path/on/host/plugins` folder you chose. From the example above,
-the `/path/on/host` folder contents look like:
-
-```
-/path/on/host
-├── plugins
-│   └── ... INSTALL PLUGINS HERE ...
-├── ops.json
-├── server.properties
-├── whitelist.json
-└── ...
-```
-
-If you add plugins while the container is running, you'll need to restart it to pick those
-up:
-
-    docker stop mc
-    docker start mc
-
-### Using separate mounts
-
-This is the easiest way if you are using an ephemeral `/data` filesystem,
-or downloading a world with the `WORLD` option.
-
-There is one additional volume that can be mounted; `/plugins`.  
-Any files in this filesystem will be copied over to the main
-`/data/plugins` filesystem before starting Minecraft.
-
-This works well if you want to have a common set of plugins in a separate
-location, but still have multiple worlds with different server requirements
-in either persistent volumes or a downloadable archive.
-
 ### Building an image with plugins
 
 You can also create your own Docker images by extending the `itzg/minecraft-server` image.
@@ -374,44 +330,6 @@ You can install Bukkit plugins in two ways...
 
 An example compose file is provided at 
 [examples/docker-compose-paper.yml](examples/docker-compose-paper.yml).
-
-### Using the /data volume
-
-This is the easiest way if you are using a persistent `/data` mount.
-
-To do this, you will need to attach the container's `/data` directory
-(see "Attaching data directory to host filesystem”).
-Then, you can add plugins to the `/path/on/host/plugins` folder you chose. From the example above,
-the `/path/on/host` folder contents look like:
-
-```
-/path/on/host
-├── plugins
-│   └── ... INSTALL PLUGINS HERE ...
-├── ops.json
-├── server.properties
-├── whitelist.json
-└── ...
-```
-
-If you add plugins while the container is running, you'll need to restart it to pick those
-up:
-
-    docker stop mc
-    docker start mc
-
-### Using separate mounts
-
-This is the easiest way if you are using an ephemeral `/data` filesystem,
-or downloading a world with the `WORLD` option.
-
-There is one additional volume that can be mounted; `/plugins`.  
-Any files in this filesystem will be copied over to the main
-`/data/plugins` filesystem before starting Minecraft.
-
-This works well if you want to have a common set of plugins in a separate
-location, but still have multiple worlds with different server requirements
-in either persistent volumes or a downloadable archive.
 
 ## Running a Server with a Feed-The-Beast (FTB) / CurseForge modpack
 
@@ -445,28 +363,6 @@ or for a CurseForce modpack:
     docker run ... \
       -e TYPE=CURSEFORGE \
       -e CF_SERVER_MOD=https://minecraft.curseforge.com/projects/enigmatica2expert/files/2663153/download
-
-### Using the /data volume
-
-You must use a persistent `/data` mount for this type of server.
-
-To do this, you will need to attach the container's `/data` directory
-(see "Attaching data directory to host filesystem”).
-
-If the modpack is updated and you want to run the new version on your
-server, you stop and remove the container:
-
-    docker stop mc
-    docker rm mc
-
-Do not erase anything from your /data directory (unless you know of
-specific mods that have been removed from the modpack). Download the
-updated FTB server modpack and copy it to `/data`. Start a new container
-with `FTB_SERVER_MOD` specifying the updated modpack file.
-
-    $ docker run -d -v /path/on/host:/data -e TYPE=FTB \
-        -e FTB_SERVER_MOD=FTBPresentsSkyfactory3Server_3.0.7.zip \
-        -p 25565:25565 -e EULA=TRUE --name mc itzg/minecraft-server
 
 ### Fixing "unable to launch forgemodloader"
 
