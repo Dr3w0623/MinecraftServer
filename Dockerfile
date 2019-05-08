@@ -1,6 +1,6 @@
 FROM openjdk:8u201-jre-alpine
 
-LABEL maintainer "itzg"
+LABEL maintainer "dr3w0623"
 
 RUN apk add --no-cache -U \
   openssl \
