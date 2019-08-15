@@ -831,3 +831,6 @@ environment variable. In [the example compose file](docker-compose-proxied.yml) 
 a companion squid proxy by setting the equivalent of
 
     -e PROXY=proxy:3128
+
+
+goobledooble
