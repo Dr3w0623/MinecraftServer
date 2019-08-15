@@ -37,6 +37,7 @@ access the Minecraft server console:
 ```
 docker exec -i mc rcon-cli
 ```
+googbledoobleschooble
 
 Note: The `-i` is required for interactive use of rcon-cli.
 
